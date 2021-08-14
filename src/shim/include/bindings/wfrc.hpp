@@ -4,6 +4,7 @@
 namespace wren = wrenbind17;
 
 #include "wfrc/DriverStation.hpp"
+#include "wfrc/GenericHID.hpp"
 #include "wfrc/XboxController.hpp"
 #include "wfrc/PowerDistribution.hpp"
 #include "wfrc/PneumaticsBase.hpp"
@@ -16,6 +17,7 @@ namespace bindings::wfrc {
     auto& m = vm->module("wpilib/frc");
 
     DriverStation::generate(&m);
+    GenericHID::generate(&m);
     XboxController::generate(&m);
 
     PowerDistribution::generate(&m);

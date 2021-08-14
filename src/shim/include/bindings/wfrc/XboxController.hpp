@@ -43,8 +43,12 @@ namespace bindings::wfrc::XboxController {
     return self.GetStickButtonReleased(static_cast<frc::GenericHID::JoystickHand>(hand));
   }
 
+  inline void SetRumble(frc::XboxController& self, int type, double value) {
+    return self.SetRumble(static_cast<frc::GenericHID::RumbleType>(type), value);
+  }
+
   inline void generate(wren::ForeignModule* m) {
-    auto& cls = m->klass<frc::XboxController>("XboxController");
+    auto& cls = m->klass<frc::XboxController, frc::GenericHID>("XboxController");
 
     cls.ctor<int>();
 
@@ -83,5 +87,7 @@ namespace bindings::wfrc::XboxController {
     cls.func<&frc::XboxController::GetStartButton>("getStartButton");
     cls.func<&frc::XboxController::GetStartButtonPressed>("getStartButtonPressed");
     cls.func<&frc::XboxController::GetStartButtonReleased>("getStartButtonReleased");
+
+    cls.funcExt<&SetRumble>("setRumble");
   }
 } // namespace bindings::wfrc::XboxController
