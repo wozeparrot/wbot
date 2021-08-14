@@ -7,6 +7,21 @@ namespace wren = wrenbind17;
 #include <frc/DriverStation.h>
 
 namespace bindings::wfrc::DriverStation {
+  class Alliance {
+  public:
+    int Red = 0;
+    int Blue = 1;
+    int Invalid = 2;
+  };
+
+  class MatchType {
+  public:
+    int None = 0;
+    int Practice = 1;
+    int Qualification = 2;
+    int Elimination = 3;
+  };
+
   static int GetMatchType() {
     return static_cast<int>(frc::DriverStation::GetMatchType());
   }
@@ -61,5 +76,21 @@ namespace bindings::wfrc::DriverStation {
 
     cls.funcStatic<&frc::DriverStation::GetMatchTime>("getMatchTime");
     cls.funcStatic<&frc::DriverStation::GetBatteryVoltage>("getBatteryVoltage");
+
+    // Bind enums
+    auto& ecls0 = m->klass<Alliance>("DriverStation_Alliance_");
+    ecls0.ctor<>();
+    ecls0.varReadonly<&Alliance::Red>("Red");
+    ecls0.varReadonly<&Alliance::Blue>("Blue");
+    ecls0.varReadonly<&Alliance::Invalid>("Invalid");
+    m->append("var DriverStation_Alliance = DriverStation_Alliance_.new()");
+
+    auto& ecls1 = m->klass<MatchType>("DriverStation_MatchType_");
+    ecls1.ctor<>();
+    ecls1.varReadonly<&MatchType::None>("None");
+    ecls1.varReadonly<&MatchType::Practice>("Practice");
+    ecls1.varReadonly<&MatchType::Qualification>("Qualification");
+    ecls1.varReadonly<&MatchType::Elimination>("Elimination");
+    m->append("var DriverStation_MatchType = DriverStation_MatchType_.new()");
   }
 } // namespace bindings::wfrc::DriverStation
