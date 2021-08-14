@@ -1,0 +1,13 @@
+baseURL = "https://matusnovak.github.io/wrenbind17"
+editURL = "https://github.com/matusnovak/wrenbind17/tree/master/docs/content"
+languageCode = "en-us"
+title = "WrenBind17"
+theme = "hugo-book"
+pygmentsCodeFences = true
+
+[params]
+  BookEditPath = 'tree/master/docs/content'
+  BookSearch = true
+  BookRepo = 'https://github.com/matusnovak/wrenbind17'
+  BookToC = true
+  BookMenuBundle = '/menu'

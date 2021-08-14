@@ -1,0 +1,172 @@
+name: build
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'Windows x64'
+            os: windows-latest
+            generator: 'Visual Studio 16 2019'
+            arch: '-A x64'
+          - name: 'Windows x86'
+            os: windows-latest
+            generator: 'Visual Studio 16 2019'
+            arch: '-A Win32'
+          - name: 'Linux x64'
+            os: ubuntu-latest
+            generator: 'Unix Makefiles'
+            arch: ''
+          - name: 'Mac OSX x64'
+            os: macos-latest
+            generator: 'Unix Makefiles'
+            arch: ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: true
+
+      - name: Configure
+        shell: bash
+        run: |
+          mkdir build
+          mkdir install
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake \
+              -B ./build \
+              -G "${{ matrix.generator }}" ${{ matrix.arch }} \
+              -DCMAKE_BUILD_TYPE=Debug \
+              -DWRENBIND17_BUILD_TESTS=ON \
+              .
+          elif [ "$RUNNER_OS" == "Linux" ]; then
+            export CC=/usr/bin/gcc-9
+            export CXX=/usr/bin/g++-9
+            cmake \
+              -B ./build \
+              -G "${{ matrix.generator }}" \
+              -DCMAKE_BUILD_TYPE=Debug \
+              -DWRENBIND17_BUILD_TESTS=ON \
+              -DWRENBIND17_COVERAGE=ON \
+              .
+          else
+            cmake \
+              -B ./build \
+              -G "${{ matrix.generator }}" \
+              -DCMAKE_BUILD_TYPE=Debug \
+              -DWRENBIND17_BUILD_TESTS=ON \
+              .
+          fi
+
+      - name: Compile
+        shell: bash
+        run: |
+          cmake --build ./build --config Debug
+
+      - name: Valgrind
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov valgrind
+          valgrind --suppressions=./wren.supp ./build/WrenBind17_Tests
+
+      - name: Tests
+        shell: bash
+        run: cd build && ctest -C Debug --verbose
+
+      - name: Create coverage report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: bash
+        run: |
+          ./coverage.sh
+
+      - name: Upload coverage
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: bash
+        run: |
+          bash <(curl -s https://codecov.io/bash) -f ./build/coverage.info || echo "Codecov did not collect coverage reports"
+
+      - name: Changelog
+        shell: bash
+        run: |
+          last_tag=$(git describe --tags --abbrev=0 @^ || true)
+          if [ -z "$last_tag" ]; then
+            git log --oneline --format="%C(auto) %h %s" > changelog.txt
+          else
+            git log --oneline --format="%C(auto) %h %s" ${last_tag}..@ > changelog.txt
+          fi
+          cat changelog.txt
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          allowUpdates: true
+          artifactContentType: application/zip
+          bodyFile: changelog.txt
+          draft: false
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  docs:
+    name: Documentation
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: true
+
+      - name: Dependencies
+        shell: bash
+        run: |
+          sudo apt-get install doxygen zip unzip -y
+          wget https://github.com/gohugoio/hugo/releases/download/v0.74.1/hugo_extended_0.74.1_Linux-64bit.tar.gz
+          tar xvf hugo_extended_0.74.1_Linux-64bit.tar.gz
+          sudo chmod +x ./hugo
+          ./hugo version
+          wget https://github.com/matusnovak/doxybook2/releases/download/v1.3.4/doxybook2-linux-amd64-v1.3.4.zip
+          unzip doxybook2-linux-amd64-v1.3.4.zip
+          sudo cp bin/doxybook2 /usr/local/bin/doxybook2
+          sudo chmod +x /usr/local/bin/doxybook2
+      
+      - name: Generate documentation
+        shell: bash
+        run: |
+          doxygen
+          doxybook2 \
+              --input temp/xml \
+              --output docs/content \
+              --config docs/.doxybook/config.json
+          rm -rf docs/content/Examples
+          rm -rf docs/content/Pages
+      
+      - name: Build static pages
+        shell: bash
+        run: |
+          cd docs
+          ../hugo
+      
+      - name: Deploy
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/public

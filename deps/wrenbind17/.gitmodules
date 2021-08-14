@@ -1,0 +1,9 @@
+[submodule "libs/wren"]
+	path = libs/wren
+	url = https://github.com/wren-lang/wren.git
+[submodule "libs/Catch2"]
+	path = libs/Catch2
+	url = https://github.com/catchorg/Catch2.git
+[submodule "docs/themes/hugo-book"]
+	path = docs/themes/hugo-book
+	url = https://github.com/alex-shpak/hugo-book
