@@ -28,6 +28,7 @@
 
                 zlib
                 xorg.libX11
+                xorg.libXt
               ];
               multiPkgs = null;
               profile = ''
