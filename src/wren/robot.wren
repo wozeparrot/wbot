@@ -1,7 +1,10 @@
 import "wpilib/frc" for DriverStation, XboxController, PowerDistribution, PneumaticsControlModule, Solenoid, DoubleSolenoid
+import "wbot/scheduler" for Scheduler
 
 class Robot {
-    construct new() {}
+    construct new() {
+        _scheduler = Scheduler.new()
+    }
 
     robotInit() {
         System.print("DS Attached? : %(DriverStation.isDSAttached())")
@@ -31,7 +34,9 @@ class Robot {
         System.print("DSol Status  : %(_dsol.get())")
     }
 
-    robotPeriodic() {}
+    robotPeriodic() {
+        _scheduler.tick()
+    }
 
     autoInit() {}
 
