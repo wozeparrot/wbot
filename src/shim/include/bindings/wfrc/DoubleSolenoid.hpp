@@ -7,6 +7,13 @@ namespace wren = wrenbind17;
 #include <frc/DoubleSolenoid.h>
 
 namespace bindings::wfrc::DoubleSolenoid {
+  class Value {
+  public:
+    int Off = 0;
+    int Forward = 1;
+    int Reverse = 2;
+  };
+
   inline void Set(frc::DoubleSolenoid& self, int value) {
     self.Set(static_cast<frc::DoubleSolenoid::Value>(value));
   }
@@ -23,5 +30,13 @@ namespace bindings::wfrc::DoubleSolenoid {
     cls.funcExt<&Set>("set");
     cls.funcExt<&Get>("get");
     cls.func<&frc::DoubleSolenoid::Toggle>("toggle");
+
+    // Bind enums
+    auto& ecls0 = m->klass<Value>("DoubleSolenoid_Value_");
+    ecls0.ctor<>();
+    ecls0.varReadonly<&Value::Off>("Off");
+    ecls0.varReadonly<&Value::Forward>("Forward");
+    ecls0.varReadonly<&Value::Reverse>("Reverse");
+    m->append("var DoubleSolenoid_Value = DoubleSolenoid_Value_.new()");
   }
 } // namespace bindings::wfrc::DoubleSolenoid
