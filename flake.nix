@@ -20,7 +20,7 @@
           devShell = let
             frcsimx86_64 = pkgs.writeShellScriptBin "frcsimx86_64" ''
               pkill frcUserProgram
-              ./gradlew build
+              ./gradlew installFrcUserProgramLinuxx86-64DebugExecutable
               sed -i 's/^LD_LIBRARY_PATH="$APP_BASE_NAME\/lib"/LD_LIBRARY_PATH="$APP_BASE_NAME\/lib:$LD_LIBRARY_PATH"/g' ./build/install/frcUserProgram/linuxx86-64/debug/frcUserProgram
               sed -i '4 s/frcUserProgram\/linuxx86-64\/debug\/lib$/frcUserProgram\/linuxx86-64\/debug\/lib:$LD_LIBRARY_PATH/' ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
               ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
