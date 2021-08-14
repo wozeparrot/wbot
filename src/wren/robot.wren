@@ -1,4 +1,5 @@
 import "wpilib/frc" for DriverStation, XboxController, PowerDistribution, PneumaticsControlModule, Solenoid, DoubleSolenoid
+import "wpilib/frc" for GenericHID_JoystickHand
 import "wbot/scheduler" for Scheduler
 
 class Robot {
@@ -50,7 +51,11 @@ class Robot {
         System.print("DS Station     : %(DriverStation.getLocation())")
     }
 
-    telePeriodic() {}
+    telePeriodic() {
+        System.print("Joystick X     : %(_controller.getX(GenericHID_JoystickHand.Left))")
+    }
+
+    testInit() {}
 
     testPeriodic() {}
 

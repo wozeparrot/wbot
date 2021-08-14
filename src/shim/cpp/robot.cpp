@@ -19,6 +19,7 @@ class Robot : public frc::TimedRobot {
     wren::Method wren_autoPeriodic;
     wren::Method wren_teleInit;
     wren::Method wren_telePeriodic;
+    wren::Method wren_testInit;
     wren::Method wren_testPeriodic;
     wren::Method wren_simInit;
     wren::Method wren_simPeriodic;
@@ -85,6 +86,12 @@ public:
             wren_telePeriodic = vm.find("robot", "RobotInstance").func("telePeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.telePeriodic()!" << std::endl;
+            ok = false;
+        }
+        try {
+            wren_testInit = vm.find("robot", "RobotInstance").func("testInit()");
+        } catch (wren::Exception& e) {
+            std::cout << "[shim] Could Not Find RobotInstance.testInit()!" << std::endl;
             ok = false;
         }
         try {
@@ -177,6 +184,17 @@ public:
         if (ok) {
             try {
                 wren_telePeriodic();
+            } catch (wren::Exception& e) {
+                std::cout << e.what() << std::endl;
+                ok = false;
+            }
+        }
+    }
+
+    void TestInit() override {
+        if (ok) {
+            try {
+                wren_testInit();
             } catch (wren::Exception& e) {
                 std::cout << e.what() << std::endl;
                 ok = false;
