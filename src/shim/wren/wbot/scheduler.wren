@@ -8,6 +8,8 @@ class Scheduler {
         __commands = {}
 
         __requirements = {}
+
+        __defaultCommands = {}
     }
 
     static tick() {
@@ -40,6 +42,13 @@ class Scheduler {
                 }
             }
         }
+
+        // Schedule default commands for subsystems without commands
+        for (s in __subsystems) {
+            if (!__requirements.containsKey(s) && __defaultCommands.containsKey(s)) {
+                schedule(__defaultCommands[s])
+            }
+        }
     }
 
     static schedule(command) {
@@ -52,7 +61,7 @@ class Scheduler {
         // Check if the command is part of a group
         if (command.grouped) Fiber.abort("Command `%(command.name)` is part of a group and cannot be scheduled independently!")
 
-        // Ensure that the commands required subsystem are registered
+        // Ensure that the commands required subsystems are registered
         if (!__subsystems.containsAll(command.requirements)) Fiber.abort("Command `%(command.name)` requires subsystems that are not registered!")
         
         // Check command against bot status
@@ -105,6 +114,27 @@ class Scheduler {
         for (r in command.requirements) {
             __requirements.remove(r)
         }
+    }
+
+    static setDefaultCommand(subsystem, command) {
+        // Check if the command is part of a group
+        if (command.grouped) Fiber.abort("Command `%(command.name)` is part of a group and cannot be scheduled independently!")
+
+        // Ensure that the commands required subsystems are registered
+        if (!__subsystems.containsAll(command.requirements)) Fiber.abort("Command `%(command.name)` requires subsystems that are not registered!")
+
+        // Ensure that the command actually requires subsystem
+        if (!command.requirements.contains(subsystem)) Fiber.abort("Command `%(command.name)` does not require subsystem %(subsystem.name)!")
+
+        __defaultCommands[subsystem] = command
+    }
+
+    static getDefaultCommand(subsystem) {
+        return __defaultCommands[subsystem]
+    }
+
+    static removeDefaultCommand(subsystem) {
+        __defaultCommands.remove(subsystem)
     }
 
     static registerSubsystem(subsystem) {
