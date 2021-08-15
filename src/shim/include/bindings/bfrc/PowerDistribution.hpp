@@ -5,7 +5,7 @@ namespace wren = wrenbind17;
 
 #include <frc/PowerDistributionPanel.h>
 
-namespace bindings::wfrc::PowerDistribution {
+namespace bindings::bfrc::PowerDistribution {
   inline void generate(wren::ForeignModule* m) {
     auto& cls = m->klass<frc::PowerDistributionPanel>("PowerDistribution"); // TODO: rename back to PowerDistribution after 2022 drops
 
@@ -19,4 +19,4 @@ namespace bindings::wfrc::PowerDistribution {
     cls.func<&frc::PowerDistributionPanel::GetTotalEnergy>("getTotalEnergy");
     cls.func<&frc::PowerDistributionPanel::ResetTotalEnergy>("resetTotalEnergy");
   }
-} // namespace bindings::wfrc::PowerDistribution
+} // namespace bindings::bfrc::PowerDistribution

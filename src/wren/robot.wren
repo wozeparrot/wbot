@@ -1,5 +1,5 @@
-import "wpilib/frc" for DriverStation, XboxController, PowerDistribution, PneumaticsControlModule, Solenoid, DoubleSolenoid
-import "wpilib/frc" for GenericHID_JoystickHand
+import "ffi/frc" for DriverStation, XboxController, PowerDistribution, PneumaticsControlModule, Solenoid, DoubleSolenoid
+import "ffi/frc" for GenericHID_JoystickHand
 
 import "wbot/scheduler" for Scheduler
 

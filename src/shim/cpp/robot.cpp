@@ -6,7 +6,7 @@ namespace wren = wrenbind17;
 
 #include <frc/TimedRobot.h>
 
-#include <bindings/wfrc.hpp>
+#include <bindings/bfrc.hpp>
 
 class Robot : public frc::TimedRobot {
     // VM instance
@@ -44,7 +44,7 @@ public:
         std::cout << "[shim] Wren VM Initialized" << std::endl;
 
         // Generate bindings
-        bindings::wfrc::generate(&vm);
+        bindings::bfrc::generate(&vm);
 
         // Run early init code
         vm.runFromModule("init");

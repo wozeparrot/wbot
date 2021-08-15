@@ -1,4 +1,4 @@
-import "wpilib/frc" for DriverStation
+import "ffi/frc" for DriverStation
 
 import "wtypes/set" for Set
 

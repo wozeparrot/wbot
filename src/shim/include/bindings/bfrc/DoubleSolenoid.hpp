@@ -6,7 +6,7 @@ namespace wren = wrenbind17;
 #include <frc/PneumaticsBase.h>
 #include <frc/DoubleSolenoid.h>
 
-namespace bindings::wfrc::DoubleSolenoid {
+namespace bindings::bfrc::DoubleSolenoid {
   class Value {
   public:
     int Off = 0;
@@ -39,4 +39,4 @@ namespace bindings::wfrc::DoubleSolenoid {
     ecls0.varReadonly<&Value::Reverse>("Reverse");
     m->append("var DoubleSolenoid_Value = DoubleSolenoid_Value_.new()");
   }
-} // namespace bindings::wfrc::DoubleSolenoid
+} // namespace bindings::bfrc::DoubleSolenoid

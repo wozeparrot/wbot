@@ -6,7 +6,7 @@ namespace wren = wrenbind17;
 #include <frc/GenericHID.h>
 #include <frc/XboxController.h>
 
-namespace bindings::wfrc::XboxController {
+namespace bindings::bfrc::XboxController {
   inline double GetX(frc::XboxController& self, int hand) {
     return self.GetX(static_cast<frc::GenericHID::JoystickHand>(hand));
   }
@@ -90,4 +90,4 @@ namespace bindings::wfrc::XboxController {
 
     cls.funcExt<&SetRumble>("setRumble");
   }
-} // namespace bindings::wfrc::XboxController
+} // namespace bindings::bfrc::XboxController

@@ -5,7 +5,7 @@ namespace wren = wrenbind17;
 
 #include <frc/GenericHID.h>
 
-namespace bindings::wfrc::GenericHID {
+namespace bindings::bfrc::GenericHID {
   class RumbleType {
   public:
     int Left = 0;
@@ -46,4 +46,4 @@ namespace bindings::wfrc::GenericHID {
     ecls1.varReadonly<&JoystickHand::Right>("Right");
     m->append("var GenericHID_JoystickHand = GenericHID_JoystickHand_.new()");
   }
-} // namespace bindings::wfrc::GenericHID
+} // namespace bindings::bfrc::GenericHID
