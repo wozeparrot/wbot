@@ -1,4 +1,4 @@
-import "wpilib/frc" for RobotState
+import "wpilib/frc" for DriverStation
 
 import "wtypes/set" for Set
 
@@ -21,7 +21,7 @@ class Scheduler {
         // Run scheduled commands
         for (c in __commands) {
             // Check command against bot status
-            if (RobotState.isDisabled() && !c.value.runsDisabled) {
+            if (DriverStation.isDisabled() && !c.value.runsDisabled) {
                 cancel(c.value)
                 continue
             }
@@ -65,7 +65,7 @@ class Scheduler {
         if (!__subsystems.containsAll(command.requirements)) Fiber.abort("Command `%(command.name)` requires subsystems that are not registered!")
         
         // Check command against bot status
-        if (RobotState.isDisabled() && !command.runsDisabled) return
+        if (DriverStation.isDisabled() && !command.runsDisabled) return
 
         // Check command requirements collisions
         var isDisjoint = true
