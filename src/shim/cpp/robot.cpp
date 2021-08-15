@@ -30,6 +30,9 @@ class Robot : public frc::TimedRobot {
     bool ok = true;
 
 public:
+    // Set loop speed here
+    Robot() : frc::TimedRobot(10_ms) {}
+
     void RobotInit() override {
         // Initialize wren vm
         vm = wren::VM({
