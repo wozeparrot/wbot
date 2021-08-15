@@ -5,17 +5,17 @@ import "wbot/scheduler" for Scheduler
 // `init` - initialize the subsystem
 // `periodic` - called every scheduler tick
 class ExampleSubsystem {
-  static name { "ExampleSubsystem" }
+    static name { "ExampleSubsystem" }
 
-  static init() {
-    // This must be called to register the Subsystem with the Scheduler
-    Scheduler.registerSubsystem(ExampleSubsystem)
-  }
+    static init() {
+        // This must be called to register the Subsystem with the Scheduler
+        Scheduler.registerSubsystem(ExampleSubsystem)
+    }
 
-  static periodic() {}
+    static periodic() {}
 
-  // A function that is called from a command
-  static talk(i) {
-    System.print("%(i) talked!")
-  }
+    // A function that is called from a command
+    static talk(i) {
+        System.print("%(i) talked!")
+    }
 }
