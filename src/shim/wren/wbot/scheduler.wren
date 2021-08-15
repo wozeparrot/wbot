@@ -43,6 +43,9 @@ class Scheduler {
   }
 
   static schedule(command) {
+    // Check if the command is null
+    if (command == null) return
+
     // Check if the command is already scheduled
     if (__commands.containsKey(command.name)) return
 
