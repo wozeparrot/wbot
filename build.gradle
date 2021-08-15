@@ -2,7 +2,6 @@
 plugins {
     id "c"
     id "cpp"
-    id "google-test-test-suite"
     id "edu.wpi.first.GradleRIO" version "2022.0.0-alpha-2"
 }
 
@@ -99,22 +98,6 @@ model {
                     srcDir 'deps/wren/src/include'
                 }
             }
-        }
-    }
-    testSuites {
-        frcUserProgramTest(GoogleTestTestSuiteSpec) {
-            testing $.components.frcUserProgram
-
-            sources.cpp {
-                source {
-                    srcDir 'src/test/cpp'
-                    include '**/*.cpp'
-                }
-            }
-
-            wpi.deps.vendor.cpp(it)
-            wpi.deps.wpilib(it)
-            wpi.deps.googleTest(it)
         }
     }
 }
