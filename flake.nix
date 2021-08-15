@@ -38,6 +38,7 @@
                 zlib
                 xorg.libX11
                 xorg.libXt
+                gtk2-x11
                 libGL
               ];
               multiPkgs = null;
