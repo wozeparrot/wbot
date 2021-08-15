@@ -136,7 +136,6 @@ public:
                 ok = false;
             }
         }
-        
     }
 
     void RobotPeriodic() override {
