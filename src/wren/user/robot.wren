@@ -68,9 +68,7 @@ class Robot {
         Scheduler.schedule(_exampleCommand)
     }
 
-    telePeriodic() {
-        // System.print("Joystick X     : %(_controller.getX(GenericHID_JoystickHand.Left))")
-    }
+    telePeriodic() {}
 
     testInit() {}
 
