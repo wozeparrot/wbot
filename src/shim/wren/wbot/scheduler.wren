@@ -89,6 +89,9 @@ class Scheduler {
     }
 
     static cancel(command) {
+        // Check if the command is null
+        if (command == null) return
+
         // Check if the command is actually scheduled
         if (!__commands.containsKey(command.name)) return
 
