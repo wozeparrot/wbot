@@ -25,6 +25,8 @@ namespace bindings::bfrc::GenericHID {
   inline void generate(wren::ForeignModule* m) {
     auto& cls = m->klass<frc::GenericHID>("GenericHID");
 
+    // cls.ctor<int>(); TODO: wait for alpha-3
+
     cls.func<&frc::GenericHID::GetRawButton>("getRawButton");
     cls.func<&frc::GenericHID::GetRawButtonPressed>("getRawButtonPressed");
     cls.func<&frc::GenericHID::GetRawButtonReleased>("getRawButtonReleased");
