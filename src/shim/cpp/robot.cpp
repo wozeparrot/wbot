@@ -48,78 +48,78 @@ public:
         std::cout << "[shim] Ran Init Code" << std::endl;
 
         // Load robot code
-        vm.runFromModule("robot");
+        vm.runFromModule("user/robot");
         std::cout << "[shim] Loaded Robot Code" << std::endl;
 
         // Load wren methods
         try {
-            wren_robotInit = vm.find("robot", "RobotInstance").func("robotInit()");
+            wren_robotInit = vm.find("user/robot", "RobotInstance").func("robotInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.robotInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_robotPeriodic = vm.find("robot", "RobotInstance").func("robotPeriodic()");
+            wren_robotPeriodic = vm.find("user/robot", "RobotInstance").func("robotPeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.robotPeriodic()!" << std::endl;
             ok = false;
         }
         try {
-            wren_autoInit = vm.find("robot", "RobotInstance").func("autoInit()");
+            wren_autoInit = vm.find("user/robot", "RobotInstance").func("autoInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.autoInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_autoPeriodic = vm.find("robot", "RobotInstance").func("autoPeriodic()");
+            wren_autoPeriodic = vm.find("user/robot", "RobotInstance").func("autoPeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.autoPeriodic()!" << std::endl;
             ok = false;
         }
         try {
-            wren_teleInit = vm.find("robot", "RobotInstance").func("teleInit()");
+            wren_teleInit = vm.find("user/robot", "RobotInstance").func("teleInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.teleInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_telePeriodic = vm.find("robot", "RobotInstance").func("telePeriodic()");
+            wren_telePeriodic = vm.find("user/robot", "RobotInstance").func("telePeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.telePeriodic()!" << std::endl;
             ok = false;
         }
         try {
-            wren_testInit = vm.find("robot", "RobotInstance").func("testInit()");
+            wren_testInit = vm.find("user/robot", "RobotInstance").func("testInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.testInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_testPeriodic = vm.find("robot", "RobotInstance").func("testPeriodic()");
+            wren_testPeriodic = vm.find("user/robot", "RobotInstance").func("testPeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.testPeriodic()!" << std::endl;
             ok = false;
         }
         try {
-            wren_simInit = vm.find("robot", "RobotInstance").func("simInit()");
+            wren_simInit = vm.find("user/robot", "RobotInstance").func("simInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.simInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_simPeriodic = vm.find("robot", "RobotInstance").func("simPeriodic()");
+            wren_simPeriodic = vm.find("user/robot", "RobotInstance").func("simPeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.simPeriodic()!" << std::endl;
             ok = false;
         }
         try {
-            wren_disabledInit = vm.find("robot", "RobotInstance").func("disabledInit()");
+            wren_disabledInit = vm.find("user/robot", "RobotInstance").func("disabledInit()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.disabledInit()!" << std::endl;
             ok = false;
         }
         try {
-            wren_disabledPeriodic = vm.find("robot", "RobotInstance").func("disabledPeriodic()");
+            wren_disabledPeriodic = vm.find("user/robot", "RobotInstance").func("disabledPeriodic()");
         } catch (wren::Exception& e) {
             std::cout << "[shim] Could Not Find RobotInstance.disabledPeriodic()!" << std::endl;
             ok = false;

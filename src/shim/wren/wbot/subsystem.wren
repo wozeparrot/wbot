@@ -1,3 +1,0 @@
-class Subsystem {
-  construct new() {}
-}
