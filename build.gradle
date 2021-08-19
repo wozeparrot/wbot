@@ -5,8 +5,11 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2022.0.0-alpha-2"
 }
 
-// Define my targets (RoboRIO) and artifacts (deployable files)
-// This is added by GradleRIO's backing project EmbeddedTools.
+wpi.maven.useDevelopment = true
+wpi.wpilibVersion = '2022.+'
+wpi.wpimathVersion = '2022.+'
+
+// Define deploy targets and artifacts
 deploy {
     targets {
         roboRIO("roborio") {
@@ -14,27 +17,26 @@ deploy {
         }
     }
     artifacts {
-        frcNativeArtifact('frcCpp') {
+        // Deploy the shim
+        frcNativeArtifact('wbotShim') {
             targets << "roborio"
             component = 'frcUserProgram'
             debug = frc.getDebugOrDefault(false)
         }
-        // Built in artifact to deploy arbitrary files to the roboRIO.
-        fileTreeArtifact('frcStaticFileDeploy') {
-            // The directory below is the local directory to deploy
+        // Deploy everything under ./deploy/ to /home/lvuser/deploy
+        fileTreeArtifact('frcStaticFiles') {
             files = fileTree(dir: 'deploy')
-            // Deploy to RoboRIO target, into /home/lvuser/deploy
             targets << "roborio"
             directory = '/home/lvuser/deploy'
         }
-        // Deploy wbot lib
-        fileTreeArtifact('wbotLibDeploy') {
+        // Deploy wbot wren code
+        fileTreeArtifact('wbotLib') {
             files = fileTree(dir: 'src/shim/wren')
             targets << "roborio"
             directory = '/home/lvuser/wbot'
         }
-        // Deploy wren code
-        fileTreeArtifact('wbotUserDeploy') {
+        // Deploy user wren code
+        fileTreeArtifact('wbotUser') {
             files = fileTree(dir: 'src/wren')
             targets << "roborio"
             directory = '/home/lvuser/wren'
@@ -60,6 +62,7 @@ sim {
 
 model {
     components {
+        // Shim program
         frcUserProgram(NativeExecutableSpec) {
             targetPlatform wpi.platforms.roborio
             targetPlatform wpi.platforms.desktop
@@ -80,10 +83,10 @@ model {
                 lib library: "wren", linkage: 'static'
             }
 
-            // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
             wpi.deps.vendor.cpp(it)
             wpi.deps.wpilib(it)
         }
+        // Wren VM
         wren(NativeLibrarySpec) {
             targetPlatform wpi.platforms.roborio
             targetPlatform wpi.platforms.desktop

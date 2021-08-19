@@ -5,7 +5,6 @@ namespace wren = wrenbind17;
 
 #include "bfrc/DriverStation.hpp"
 #include "bfrc/GenericHID.hpp"
-#include "bfrc/XboxController.hpp"
 #include "bfrc/PowerDistribution.hpp"
 #include "bfrc/PneumaticsBase.hpp"
 #include "bfrc/PneumaticsControlModule.hpp"
@@ -18,7 +17,6 @@ namespace bindings::bfrc {
 
     DriverStation::generate(&m);
     GenericHID::generate(&m);
-    XboxController::generate(&m);
 
     PowerDistribution::generate(&m);
 

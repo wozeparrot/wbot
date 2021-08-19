@@ -1,4 +1,4 @@
-import "ffi/frc" for DriverStation, XboxController, PowerDistribution, PneumaticsControlModule, Solenoid, DoubleSolenoid
+import "ffi/frc" for DriverStation
 import "ffi/frc" for GenericHID_JoystickHand
 
 import "wbot/scheduler" for Scheduler

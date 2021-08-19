@@ -1,7 +1,6 @@
 import "wbot/scheduler" for Scheduler
 
-// import "wfrc/xbox_controller" for XboxController TODO: wait for alpha-3
-import "ffi/frc" for XboxController
+import "wfrc/xbox_controller" for XboxController
 
 import "user/subsystems/example_subsystem" for ExampleSubsystem
 import "user/commands/example_command" for ExampleCommand

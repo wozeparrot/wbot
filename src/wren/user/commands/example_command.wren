@@ -19,7 +19,7 @@ class ExampleCommand is Command {
     }
 
     execute() {
-        ExampleSubsystem.talk("command: %(_controller.getX(0))") // TODO: wait for alpha-3 to switch back to wren XboxController
+        ExampleSubsystem.talk("command: %(_controller.getLeftX())")
     }
 
     end(interrupted) {
