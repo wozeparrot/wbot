@@ -32,6 +32,7 @@
                 gradle_6
                 gcc
                 gdb
+                astyle
 
                 frcsimx86_64
 
