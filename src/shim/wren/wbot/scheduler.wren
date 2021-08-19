@@ -4,17 +4,39 @@ import "wtypes/set" for Set
 
 class Scheduler {
     static init() {
+        // Holds subsystems
         __subsystems = Set.new()
+        // Holds commands
         __commands = {}
 
+        // Map of command required subsystems
         __requirements = {}
 
+        // Holds the default commands to run for subsystems
         __defaultCommands = {}
+
+        // Check if the `disabled` subsystem method has already been run
+        __ranSubsystemDisabled = false
     }
 
     static tick() {
+        // Check to see if we are running the `disabled` subsystem method this loop
+        var runSubsystemDisabled = false
+        if (DriverStation.isDisabled()) {
+            runSubsystemDisabled = !__ranSubsystemDisabled
+            __ranSubsystemDisabled = true
+        } else {
+            runSubsystemDisabled = false
+            __ranSubsystemDisabled = false
+        }
+
         // Run subsystems periodic
         for (s in __subsystems) {
+            // run `disabled` method if flag set
+            if (runSubsystemDisabled) {
+                s.disabled()
+            }
+
             s.periodic()
         }
 
