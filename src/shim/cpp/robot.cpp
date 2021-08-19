@@ -7,6 +7,7 @@ namespace wren = wrenbind17;
 #include <frc/TimedRobot.h>
 
 #include <bindings/bfrc.hpp>
+#include <bindings/bnavx.hpp>
 
 class Robot : public frc::TimedRobot {
     // VM instance
@@ -45,6 +46,7 @@ public:
 
         // Generate bindings
         bindings::bfrc::generate(&vm);
+        bindings::bnavx::generate(&vm);
 
         // Run early init code
         vm.runFromModule("init");
@@ -261,6 +263,8 @@ public:
 };
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main() {
+    return frc::StartRobot<Robot>();
+}
 #endif
 
