@@ -6,7 +6,7 @@ namespace wren = wrenbind17;
 #include <units/time.h>
 #include <frc/DriverStation.h>
 
-namespace bindings::bfrc::DriverStation {
+namespace bindings::bfrc::bDriverStation {
     class Alliance {
     public:
         int Red = 0;
@@ -93,4 +93,4 @@ namespace bindings::bfrc::DriverStation {
         ecls1.varReadonly<&MatchType::Elimination>("Elimination");
         m->append("var DriverStation_MatchType = DriverStation_MatchType_.new()");
     }
-} // namespace bindings::bfrc::DriverStation
+} // namespace bindings::bfrc::bDriverStation

@@ -6,7 +6,7 @@ namespace wren = wrenbind17;
 #include <frc/PneumaticsBase.h>
 #include <frc/PneumaticsControlModule.h>
 
-namespace bindings::bfrc::PneumaticsControlModule {
+namespace bindings::bfrc::bPneumaticsControlModule {
     inline void generate(wren::ForeignModule* m) {
         auto& cls = m->klass<frc::PneumaticsControlModule, frc::PneumaticsBase>("PneumaticsControlModule");
 
@@ -15,4 +15,4 @@ namespace bindings::bfrc::PneumaticsControlModule {
         cls.func<&frc::PneumaticsControlModule::SetClosedLoopControl>("setClosedLoopControl");
         cls.func<&frc::PneumaticsControlModule::GetClosedLoopControl>("getClosedLoopControl");
     }
-} // namespace bindings::bfrc::PneumaticsControlModule
+} // namespace bindings::bfrc::bPneumaticsControlModule

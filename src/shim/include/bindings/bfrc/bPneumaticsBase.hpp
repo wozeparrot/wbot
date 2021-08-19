@@ -5,8 +5,8 @@ namespace wren = wrenbind17;
 
 #include <frc/PneumaticsBase.h>
 
-namespace bindings::bfrc::PneumaticsBase {
+namespace bindings::bfrc::bPneumaticsBase {
     inline void generate(wren::ForeignModule* m) {
         auto& cls = m->klass<frc::PneumaticsBase>("PneumaticsBase");
     }
-} // namespace bindings::bfrc::PneumaticsBase
+} // namespace bindings::bfrc::bPneumaticsBase

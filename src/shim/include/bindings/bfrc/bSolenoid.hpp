@@ -9,7 +9,7 @@ namespace wren = wrenbind17;
 #include <frc/PneumaticsBase.h>
 #include <frc/DoubleSolenoid.h>
 
-namespace bindings::bfrc::Solenoid {
+namespace bindings::bfrc::bSolenoid {
     class Solenoid {
     public:
         Solenoid(std::shared_ptr<frc::PneumaticsBase> module, int channel) : sol(module, channel, channel) {}
@@ -38,4 +38,4 @@ namespace bindings::bfrc::Solenoid {
         cls.func<&Solenoid::Get>("get");
         cls.func<&Solenoid::Toggle>("toggle");
     }
-} // namespace bindings::bfrc::Solenoid
+} // namespace bindings::bfrc::bSolenoid

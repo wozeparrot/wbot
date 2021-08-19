@@ -5,7 +5,7 @@ namespace wren = wrenbind17;
 
 #include <frc/SPI.h>
 
-namespace bindings::bfrc::SPI {
+namespace bindings::bfrc::bSPI {
     class Port {
     public:
         int OnboardCS0 = 0;
@@ -26,4 +26,4 @@ namespace bindings::bfrc::SPI {
         ecls0.varReadonly<&Port::MXP>("MXP");
         m->append("var SPI_Port = SPI_Port_.new()");
     }
-} // namespace bindings::bfrc::SPI
+} // namespace bindings::bfrc::bSPI

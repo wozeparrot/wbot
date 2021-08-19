@@ -5,7 +5,7 @@ namespace wren = wrenbind17;
 
 #include <frc/PowerDistribution.h>
 
-namespace bindings::bfrc::PowerDistribution {
+namespace bindings::bfrc::bPowerDistribution {
     class ModuleType {
     public:
         int Auto = 0;
@@ -13,14 +13,14 @@ namespace bindings::bfrc::PowerDistribution {
         int Rev = 2;
     };
 
-    static frc::PowerDistribution* PowerDistribution_ctor(int module, int moduleType) {
+    inline frc::PowerDistribution* ctor(int module, int moduleType) {
         return new frc::PowerDistribution(module, static_cast<frc::PowerDistribution::ModuleType>(moduleType));
     }
 
     inline void generate(wren::ForeignModule* m) {
         auto& cls = m->klass<frc::PowerDistribution>("PowerDistribution");
 
-        cls.funcStaticExt<&PowerDistribution_ctor>("new");
+        cls.funcStaticExt<&ctor>("new");
 
         cls.func<&frc::PowerDistribution::GetVoltage>("getVoltage");
         cls.func<&frc::PowerDistribution::GetTemperature>("getTemperature");
@@ -38,4 +38,4 @@ namespace bindings::bfrc::PowerDistribution {
         ecls0.varReadonly<&ModuleType::Rev>("Rev");
         m->append("var PowerDistribution_ModuleType = PowerDistribution_ModuleType_.new()");
     }
-} // namespace bindings::bfrc::PowerDistribution
+} // namespace bindings::bfrc::bPowerDistribution
