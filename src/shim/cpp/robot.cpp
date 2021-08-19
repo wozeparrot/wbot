@@ -46,7 +46,7 @@ public:
 
         // Generate bindings
         bindings::bfrc::generate(&vm);
-        bindings::bnavx::generate(&vm);
+        // bindings::bnavx::generate(&vm); // Currently not working
 
         // Run early init code
         vm.runFromModule("init");
