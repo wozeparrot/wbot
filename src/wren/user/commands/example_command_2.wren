@@ -7,7 +7,7 @@ class ExampleCommand2 is Command {
     construct new() {
         // Call super with the name of the command and a list of required subsystems
         super([
-        ExampleSubsystem
+            ExampleSubsystem
         ], "ExampleCommand2")
 
         // Use super to set command settings
