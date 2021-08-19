@@ -15,9 +15,5 @@ namespace bindings::bnavx::bAHRS {
         auto& cls = m->klass<AHRS>("AHRS");
 
         cls.funcStaticExt<&ctor>("new");
-
-        cls.func<&AHRS::GetPitch>();
-        cls.func<&AHRS::GetRoll>();
-        cls.func<&AHRS::GetYaw>();
     }
 } // namespace bindings::bnavx::bAHRS
