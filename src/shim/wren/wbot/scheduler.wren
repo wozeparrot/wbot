@@ -8,6 +8,8 @@ class Scheduler {
         __subsystems = Set.new()
         // Holds commands
         __commands = {}
+        // Holds triggers
+        __triggers = []
 
         // Map of command required subsystems
         __requirements = {}
@@ -38,6 +40,11 @@ class Scheduler {
             }
 
             s.periodic()
+        }
+
+        // Check triggers
+        for (t in __triggers) {
+            t.check()
         }
 
         // Run scheduled commands
@@ -104,7 +111,9 @@ class Scheduler {
         // Schedule command and call its init function
         if (isDisjoint || allInterruptible) {
             if (allInterruptible) {
-                for (c in intersections) { cancel(c) }
+                for (c in intersections) {
+                    cancel(c)
+                }
             }
 
             // Call command init function
@@ -161,5 +170,13 @@ class Scheduler {
 
     static registerSubsystem(subsystem) {
         __subsystems.add(subsystem)
+    }
+
+    static addTrigger(trigger) {
+        __triggers.add(trigger)
+    }
+
+    static removeTrigger(trigger) {
+        __triggers.remove(trigger)
     }
 }
