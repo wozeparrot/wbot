@@ -1,6 +1,7 @@
 import "ffi/frc" for DriverStation
 
 import "wtypes/set" for Set
+import "wtypes/queue" for Queue
 
 class Scheduler {
     static init() {
@@ -19,9 +20,16 @@ class Scheduler {
 
         // Check if the `disabled` subsystem method has already been run
         __ranSubsystemDisabled = false
+
+        // Queues and flag to make sure that no changes happen during a tick
+        __inTick = false
+        __toCancel = Queue.new()
+        __toSchedule = Queue.new()
     }
 
     static tick() {
+        __inTick = true
+
         // Check to see if we are running the `disabled` subsystem method this loop
         var runSubsystemDisabled = false
         if (DriverStation.isDisabled()) {
@@ -78,9 +86,29 @@ class Scheduler {
                 schedule(__defaultCommands[s])
             }
         }
+
+        __inTick = false
+
+        // Schedule and cancel all queued items
+        var item = __toCancel.pop()
+        while (item) {
+            cancel(item)
+            item = __toCancel.pop()
+        }
+        item = __toSchedule.pop()
+        while (item) {
+            schedule(item)
+            item = __toSchedule.pop()
+        }
     }
 
     static schedule(command) {
+        // Check if we are in a tick
+        if (__inTick) {
+            __toSchedule.push(command)
+            return
+        }
+
         // Check if the command is null
         if (command == null) return
 
@@ -129,6 +157,12 @@ class Scheduler {
     }
 
     static cancel(command) {
+        // Check if we are in a tick
+        if (__inTick) {
+            __toCancel.push(command)
+            return
+        }
+
         // Check if the command is null
         if (command == null) return
 
