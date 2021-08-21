@@ -25,6 +25,14 @@
               sed -i '4 s/frcUserProgram\/linuxx86-64\/debug\/lib$/frcUserProgram\/linuxx86-64\/debug\/lib:$LD_LIBRARY_PATH/' ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
               ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
             '';
+            deploywren = pkgs.writeShellScriptBin "deploywren" ''
+              if [[ -z "$1" ]]; then
+                printf "%s\n" "Usage: $0 <roborio ip>" >&2
+                exit 1
+              fi
+
+              scp -oBatchMode=yes -oStrictHostKeyChecking=no ./src/wren/ lvuser@$1:/home/lvuser/wren/
+            '';
             fhs = pkgs.buildFHSUserEnv {
               name = "frc2022-env";
               targetPkgs = pkgs: with pkgs; [
