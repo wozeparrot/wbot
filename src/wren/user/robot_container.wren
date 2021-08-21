@@ -19,7 +19,7 @@ class RobotContainer {
 
         // Setup triggers
         Scheduler.addTrigger(Trigger.new()
-            .on { _controller.getA() }
+            .on { _controller.getA() && _controller.getB() }
             .whenActiveContinuous(ExampleCommand3.new())
         .end())
 
