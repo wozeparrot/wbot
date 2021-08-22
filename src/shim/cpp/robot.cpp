@@ -18,14 +18,18 @@ class Robot : public frc::TimedRobot {
     wren::Method wren_robotPeriodic;
     wren::Method wren_autoInit;
     wren::Method wren_autoPeriodic;
+    wren::Method wren_autoExit;
     wren::Method wren_teleInit;
     wren::Method wren_telePeriodic;
+    wren::Method wren_teleExit;
     wren::Method wren_testInit;
     wren::Method wren_testPeriodic;
+    wren::Method wren_testExit;
     wren::Method wren_simInit;
     wren::Method wren_simPeriodic;
     wren::Method wren_disabledInit;
     wren::Method wren_disabledPeriodic;
+    wren::Method wren_disabledExit;
 
     // Ok state
     bool ok = true;
@@ -57,78 +61,22 @@ public:
         std::cout << "[shim] Loaded Robot Code" << std::endl;
 
         // Load wren methods
-        try {
-            wren_robotInit = vm.find("robot", "RobotInstance").func("robotInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.robotInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_robotPeriodic = vm.find("robot", "RobotInstance").func("robotPeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.robotPeriodic()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_autoInit = vm.find("robot", "RobotInstance").func("autoInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.autoInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_autoPeriodic = vm.find("robot", "RobotInstance").func("autoPeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.autoPeriodic()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_teleInit = vm.find("robot", "RobotInstance").func("teleInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.teleInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_telePeriodic = vm.find("robot", "RobotInstance").func("telePeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.telePeriodic()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_testInit = vm.find("robot", "RobotInstance").func("testInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.testInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_testPeriodic = vm.find("robot", "RobotInstance").func("testPeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.testPeriodic()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_simInit = vm.find("robot", "RobotInstance").func("simInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.simInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_simPeriodic = vm.find("robot", "RobotInstance").func("simPeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.simPeriodic()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_disabledInit = vm.find("robot", "RobotInstance").func("disabledInit()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.disabledInit()!" << std::endl;
-            ok = false;
-        }
-        try {
-            wren_disabledPeriodic = vm.find("robot", "RobotInstance").func("disabledPeriodic()");
-        } catch (wren::Exception& e) {
-            std::cout << "[shim] Could Not Find RobotInstance.disabledPeriodic()!" << std::endl;
-            ok = false;
-        }
+        wren_robotInit = im("robotInit()");
+        wren_robotPeriodic = im("robotPeriodic()");
+        wren_autoInit = im("autoInit()");
+        wren_autoPeriodic = im("autoPeriodic()");
+        wren_autoExit = im("autoExit()");
+        wren_teleInit = im("teleInit()");
+        wren_telePeriodic = im("telePeriodic()");
+        wren_teleExit = im("teleExit()");
+        wren_testInit = im("testInit()");
+        wren_testPeriodic = im("testPeriodic()");
+        wren_testExit = im("testExit()");
+        wren_simInit = im("simInit()");
+        wren_simPeriodic = im("simPeriodic()");
+        wren_disabledInit = im("disabledInit()");
+        wren_disabledPeriodic = im("disabledPeriodic()");
+        wren_disabledExit = im("disabledExit()");
 
         if (ok) {
             try {
@@ -138,6 +86,17 @@ public:
                 ok = false;
             }
         }
+    }
+
+    wren::Method im(std::string func) {
+        wren::Method method;
+        try {
+            method = vm.find("robot", "RobotInstance").func(func);
+        } catch (wren::Exception& e) {
+            std::cout << "[shim] Could Not Find RobotInstance." << func << "!" << std::endl;
+            ok = false;
+        }
+        return method;
     }
 
     void RobotPeriodic() override {
@@ -173,6 +132,17 @@ public:
         }
     }
 
+    void AutonomousExit() override {
+        if (ok) {
+            try {
+                wren_autoExit();
+            } catch (wren::Exception& e) {
+                std::cout << e.what() << std::endl;
+                ok = false;
+            }
+        }
+    }
+
     void TeleopInit() override {
         if (ok) {
             try {
@@ -195,6 +165,17 @@ public:
         }
     }
 
+    void TeleopExit() override {
+        if (ok) {
+            try {
+                wren_teleExit();
+            } catch (wren::Exception& e) {
+                std::cout << e.what() << std::endl;
+                ok = false;
+            }
+        }
+    }
+
     void TestInit() override {
         if (ok) {
             try {
@@ -210,6 +191,17 @@ public:
         if (ok) {
             try {
                 wren_testPeriodic();
+            } catch (wren::Exception& e) {
+                std::cout << e.what() << std::endl;
+                ok = false;
+            }
+        }
+    }
+
+    void TestExit() override {
+        if (ok) {
+            try {
+                wren_testExit();
             } catch (wren::Exception& e) {
                 std::cout << e.what() << std::endl;
                 ok = false;
@@ -254,6 +246,17 @@ public:
         if (ok) {
             try {
                 wren_disabledPeriodic();
+            } catch (wren::Exception& e) {
+                std::cout << e.what() << std::endl;
+                ok = false;
+            }
+        }
+    }
+
+    void DisabledExit() override {
+        if (ok) {
+            try {
+                wren_disabledExit();
             } catch (wren::Exception& e) {
                 std::cout << e.what() << std::endl;
                 ok = false;

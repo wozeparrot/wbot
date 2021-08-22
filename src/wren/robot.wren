@@ -34,6 +34,9 @@ class Robot {
     // Called every auto tick
     autoPeriodic() {}
 
+    // Called when robot exits auto mode
+    autoExit() {}
+
     // Called when robot enters teleop mode
     teleInit() {
         // Cancel the maybe running auto command
@@ -43,11 +46,17 @@ class Robot {
     // Called every teleop tick
     telePeriodic() {}
 
+    // Called when robot exits teleop mode
+    teleExit() {}
+
     // Called when robot enters test mode
     testInit() {}
 
     // Called every test tick
     testPeriodic() {}
+
+    // Called when robot exits test mode
+    testExit() {}
 
     // Called when the simulator is started
     simInit() {}
@@ -60,6 +69,9 @@ class Robot {
 
     // Called every disabled tick
     disabledPeriodic() {}
+
+    // Called when robot exits disabled mode
+    disabledExit() {}
 }
 
 // Create a instance of Robot for the shim code to work
