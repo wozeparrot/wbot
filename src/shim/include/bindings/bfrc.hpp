@@ -10,6 +10,7 @@ namespace wren = wrenbind17;
 #include "bfrc/bPneumaticsControlModule.hpp"
 #include "bfrc/bSolenoid.hpp"
 #include "bfrc/bDoubleSolenoid.hpp"
+#include "bfrc/bSpeedController.hpp"
 #include "bfrc/bSPI.hpp"
 
 namespace bindings::bfrc {
@@ -25,6 +26,8 @@ namespace bindings::bfrc {
         bPneumaticsControlModule::generate(&m);
         bSolenoid::generate(&m);
         bDoubleSolenoid::generate(&m);
+
+        bSpeedController::generate(&m);
 
         bSPI::generate(&m);
     }
