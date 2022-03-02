@@ -2,63 +2,43 @@
 plugins {
     id "c"
     id "cpp"
-    id "edu.wpi.first.GradleRIO" version "2022.0.0-alpha-2"
+    id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
-
-wpi.maven.useDevelopment = true
-wpi.wpilibVersion = '2022.+'
-wpi.wpimathVersion = '2022.+'
 
 // Define deploy targets and artifacts
 deploy {
     targets {
-        roboRIO("roborio") {
-            team = frc.getTeamNumber()
-        }
-    }
-    artifacts {
-        // Deploy the shim
-        frcNativeArtifact('wbotShim') {
-            targets << "roborio"
-            component = 'frcUserProgram'
-            debug = frc.getDebugOrDefault(false)
-        }
-        // Deploy everything under ./deploy/ to /home/lvuser/deploy
-        fileTreeArtifact('frcStaticFiles') {
-            files = fileTree(dir: 'deploy')
-            targets << "roborio"
-            directory = '/home/lvuser/deploy'
-        }
-        // Deploy wbot wren code
-        fileTreeArtifact('wbotLib') {
-            files = fileTree(dir: 'src/shim/wren')
-            targets << "roborio"
-            directory = '/home/lvuser/wbot'
-        }
-        // Deploy user wren code
-        fileTreeArtifact('wbotUser') {
-            files = fileTree(dir: 'src/wren')
-            targets << "roborio"
-            directory = '/home/lvuser/wren'
+        roborio(getTargetTypeClass("RoboRIO")) {
+            team = project.frc.getTeamNumber()
+            debug = project.frc.getDebugOrDefault(false)
+
+            artifacts {
+                // Deploy the shim
+                wrenShim(getArtifactTypeClass("FRCNativeArtifact")) {
+                }
+                // Deploy everything under ./deploy/ to /home/lvuser/deploy
+                frcStaticFiles(getArtifactTypeClass("FileTreeArtifact")) {
+                    files = project.fileTree("deploy")
+                    directory = "/home/lvuser/deploy"
+                }
+                // Deploy wbot wren code
+                wbotLib(getArtifactTypeClass("FileTreeArtifact")) {
+                    files = project.fileTree("src/shim/wren")
+                    directory = "/home/lvuser/wbot"
+                }
+                // Deploy user wren code
+                wbotUser(getArtifactTypeClass("FileTreeArtifact")) {
+                    files = project.fileTree("src/wren")
+                    directory = "/home/lvuser/wren"
+                }
+            }
         }
     }
 }
 
-dependencies {
-    // In C++ for now, the argument must be true
-    simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
-    simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, true)
-
-    // Websocket extensions require additional configuration.
-    // simulation wpi.deps.sim.ws_server(wpi.platforms.desktop, true)
-    // simulation wpi.deps.sim.ws_client(wpi.platforms.desktop, true)
-}
-
-// Simulation configuration (e.g. environment variables).
-sim {
-    // Sets the websocket client remote host.
-    // envVar "HALSIMWS_HOST", "10.0.0.2"
-}
+wpi.cpp.debugSimulation = true
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation()
 
 model {
     components {
@@ -76,15 +56,21 @@ model {
 
                     srcDir 'deps/wren/src/include'
                     srcDir 'deps/wrenbind17/include'
-                    
+
                     include '**/*.hpp'
                 }
 
                 lib library: "wren", linkage: 'static'
             }
 
-            wpi.deps.vendor.cpp(it)
-            wpi.deps.wpilib(it)
+            deploy.targets.roborio.artifacts.wrenShim.component = it
+
+            wpi.cpp.enableExternalTasks(it)
+
+            wpi.sim.enable(it)
+
+            wpi.cpp.vendor.cpp(it)
+            wpi.cpp.deps.wpilib(it)
         }
         // Wren VM
         wren(NativeLibrarySpec) {

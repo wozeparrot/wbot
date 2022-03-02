@@ -10,34 +10,31 @@
 
   outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (
-      system: let
+      system:
+      let
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
       in
-        {
-          devShell = let
+      {
+        devShell =
+          let
             frcsimx86_64 = pkgs.writeShellScriptBin "frcsimx86_64" ''
-              pkill frcUserProgram
-              ./gradlew installFrcUserProgramLinuxx86-64DebugExecutable
-              sed -i 's/^LD_LIBRARY_PATH="$APP_BASE_NAME\/lib"/LD_LIBRARY_PATH="$APP_BASE_NAME\/lib:$LD_LIBRARY_PATH"/g' ./build/install/frcUserProgram/linuxx86-64/debug/frcUserProgram
-              sed -i '4 s/frcUserProgram\/linuxx86-64\/debug\/lib$/frcUserProgram\/linuxx86-64\/debug\/lib:$LD_LIBRARY_PATH/' ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
-              ./build/gradlerio_simulateFrcUserProgramLinuxx86-64DebugExecutable.sh
-            '';
-            deploywren = pkgs.writeShellScriptBin "deploywren" ''
-              if [[ -z "$1" ]]; then
-                printf "%s\n" "Usage: $0 <roborio ip>" >&2
-                exit 1
-              fi
+              set -euxo pipefail
 
-              scp -oBatchMode=yes -oStrictHostKeyChecking=no ./src/wren/ lvuser@$1:/home/lvuser/wren/
+              pkill frcUserProgram || true
+              
+              ./gradlew installFrcUserProgramLinuxx86-64DebugExecutable
+
+              export LD_LIBRARY_PATH="./build/install/frcUserProgram/linuxx86-64/debug/lib:$LD_LIBRARY_PATH"
+              exec ./build/install/frcUserProgram/linuxx86-64/debug/lib/frcUserProgram "$@"
             '';
             fhs = pkgs.buildFHSUserEnv {
               name = "frc2022-env";
               targetPkgs = pkgs: with pkgs; [
                 openjdk11
-                gradle_6
+                gradle
                 gcc
                 gdb
                 astyle
@@ -55,8 +52,8 @@
                 export PATH=$PATH:$HOME/.gradle/toolchains/frc/2021/roborio/bin/
               '';
             };
-            in
-            fhs.env;
-        }
+          in
+          fhs.env;
+      }
     );
 }

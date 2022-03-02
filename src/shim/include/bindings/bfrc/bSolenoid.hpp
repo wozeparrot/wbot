@@ -6,36 +6,21 @@
 #include <wrenbind17/wrenbind17.hpp>
 namespace wren = wrenbind17;
 
-#include <frc/PneumaticsBase.h>
-#include <frc/DoubleSolenoid.h>
+#include <frc/Solenoid.h>
+#include <frc/PneumaticsModuleType.h>
 
 namespace bindings::bfrc::bSolenoid {
-    class Solenoid {
-    public:
-        Solenoid(std::shared_ptr<frc::PneumaticsBase> module, int channel) : sol(module, channel, channel) {}
-
-        void Set(bool on) {
-            on ? sol.Set(frc::DoubleSolenoid::kForward) : sol.Set(frc::DoubleSolenoid::kOff);
-        }
-
-        bool Get() {
-            return sol.Get() > 0 ? true : false;
-        }
-
-        void Toggle() {
-            Get() ? Set(false) : Set(true);
-        }
-    private:
-        frc::DoubleSolenoid sol;
-    };
+    inline frc::Solenoid* ctor(int module, int moduleType, int channel) {
+        return new frc::Solenoid(module, static_cast<frc::PneumaticsModuleType>(moduleType), channel);
+    }
 
     inline void generate(wren::ForeignModule* m) {
-        auto& cls = m->klass<Solenoid>("Solenoid");
+        auto& cls = m->klass<frc::Solenoid>("Solenoid");
 
-        cls.ctor<std::shared_ptr<frc::PneumaticsBase>, int>();
+        cls.funcStaticExt<&ctor>("new");
 
-        cls.func<&Solenoid::Set>("set");
-        cls.func<&Solenoid::Get>("get");
-        cls.func<&Solenoid::Toggle>("toggle");
+        cls.func<&frc::Solenoid::Set>("set");
+        cls.func<&frc::Solenoid::Get>("get");
+        cls.func<&frc::Solenoid::Toggle>("toggle");
     }
 } // namespace bindings::bfrc::bSolenoid

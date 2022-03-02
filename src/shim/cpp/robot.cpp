@@ -44,13 +44,15 @@ public:
             "/home/lvuser/wren",
             "/home/lvuser/wbot",
             "../../../../../../src/wren",
-            "../../../../../../src/shim/wren"
+            "../../../../../../src/shim/wren",
+            "./src/wren",
+            "./src/shim/wren"
         });
         std::cout << "[shim] Wren VM Initialized" << std::endl;
 
         // Generate bindings
         bindings::bfrc::generate(&vm);
-        // bindings::bnavx::generate(&vm); // Currently not working
+        // bindings::bnavx::generate(&vm); // Doesn't work on linux x86-64 :(
 
         // Run early init code
         vm.runFromModule("init");

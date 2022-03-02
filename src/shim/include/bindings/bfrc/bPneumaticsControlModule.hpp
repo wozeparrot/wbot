@@ -11,8 +11,5 @@ namespace bindings::bfrc::bPneumaticsControlModule {
         auto& cls = m->klass<frc::PneumaticsControlModule, frc::PneumaticsBase>("PneumaticsControlModule");
 
         cls.ctor<int>();
-
-        cls.func<&frc::PneumaticsControlModule::SetClosedLoopControl>("setClosedLoopControl");
-        cls.func<&frc::PneumaticsControlModule::GetClosedLoopControl>("getClosedLoopControl");
     }
 } // namespace bindings::bfrc::bPneumaticsControlModule

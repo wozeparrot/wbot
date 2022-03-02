@@ -14,6 +14,10 @@ namespace bindings::bfrc::bDoubleSolenoid {
         int Reverse = 2;
     };
 
+    inline frc::DoubleSolenoid* ctor(int module, int moduleType, int forwardChannel, int reverseChannel) {
+        return new frc::DoubleSolenoid(module, static_cast<frc::PneumaticsModuleType>(moduleType), forwardChannel, reverseChannel);
+    }
+
     inline void Set(frc::DoubleSolenoid& self, int value) {
         self.Set(static_cast<frc::DoubleSolenoid::Value>(value));
     }
@@ -25,7 +29,7 @@ namespace bindings::bfrc::bDoubleSolenoid {
     inline void generate(wren::ForeignModule* m) {
         auto& cls = m->klass<frc::DoubleSolenoid>("DoubleSolenoid");
 
-        cls.ctor<frc::PneumaticsBase&, int, int>();
+        cls.funcStaticExt<&ctor>("new");
 
         cls.funcExt<&Set>("set");
         cls.funcExt<&Get>("get");
