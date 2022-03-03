@@ -63,9 +63,6 @@ class Scheduler {
                 continue
             }
 
-            // Call command execute function
-            c.value.execute()
-
             // Check if command is finished
             if (c.value.isFinished()) {
                 c.value.end(false)
@@ -78,6 +75,9 @@ class Scheduler {
                     __requirements.remove(r)
                 }
             }
+
+            // Call command execute function
+            c.value.execute()
         }
 
         // Schedule default commands for subsystems without commands
