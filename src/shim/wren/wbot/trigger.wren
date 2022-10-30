@@ -8,7 +8,7 @@ class Trigger {
 
         // Holds trigger check functions
         _triggers = []
-        
+
         // Setup command lists
         _activeCommands = []
         _activeContinuousCommands = []

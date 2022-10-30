@@ -120,7 +120,7 @@ class Scheduler {
 
         // Ensure that the commands required subsystems are registered
         if (!__subsystems.containsAll(command.requirements)) Fiber.abort("Command `%(command.name)` requires subsystems that are not registered!")
-        
+
         // Check command against bot status
         if (DriverStation.isDisabled() && !command.runsDisabled) return
 

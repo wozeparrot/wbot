@@ -26,9 +26,12 @@ class RobotContainer {
         // Subsystem initialization
         ExampleSubsystem.init()
         // Set default command for subsystem
-        Scheduler.setDefaultCommand(ExampleSubsystem, ExampleCommand.new(_controller))
+        Scheduler.setDefaultCommand(ExampleSubsystem, ExampleCommand3.new())
     }
 
     // Returns the command to run for auto mode
     getAutoCommand() { ExampleCommand2.new() }
+
+    // Return the command to run for teleop mode
+    getTeleopCommand() { ExampleCommand.new(Fn.new { _controller.getLeftX() }) }
 }

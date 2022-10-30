@@ -35,6 +35,13 @@ deploy {
     }
 }
 
+def includeDesktopSupport = true
+
+dependencies {
+    simulationDebug wpi.sim.enableDebug()
+    simulationRelease wpi.sim.enableRelease()
+}
+
 wpi.cpp.debugSimulation = true
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()

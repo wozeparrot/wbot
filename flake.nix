@@ -28,6 +28,8 @@
               gradle installFrcUserProgramLinuxx86-64DebugExecutable
 
               export LD_LIBRARY_PATH="./build/install/frcUserProgram/linuxx86-64/debug/lib:$LD_LIBRARY_PATH"
+              export DYLD_LIBRARY_PATH="./build/install/frcUserProgram/linuxx86-64/debug/lib"
+              export HALSIM_EXTENSIONS="halsim_guid:halsim_ds_socketd"
               exec ./build/install/frcUserProgram/linuxx86-64/debug/lib/frcUserProgram "$@"
             '';
             fhs = pkgs.buildFHSUserEnv {

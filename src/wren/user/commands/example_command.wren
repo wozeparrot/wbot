@@ -4,14 +4,14 @@ import "user/subsystems/example_subsystem" for ExampleSubsystem
 
 // An ExampleCommand that requires ExampleSubsystem
 class ExampleCommand is Command {
-    construct new(controller) {
+    construct new(controlXSupplier) {
         // Call super with the name of the command and a list of required subsystems
         super([
-        ExampleSubsystem
+            ExampleSubsystem
         ], "ExampleCommand")
 
-        // Pass in controller
-        _controller = controller
+        // Pass in controlX
+        _controlXSupplier = controlXSupplier
     }
 
     init() {
@@ -19,14 +19,14 @@ class ExampleCommand is Command {
     }
 
     execute() {
-        ExampleSubsystem.talk("command: %(_controller.getLeftX())")
+        ExampleSubsystem.talk("command: %(_controlXSupplier.call())")
     }
 
     end(interrupted) {
         System.print("command interrupted? %(interrupted)")
     }
 
-    isFinished() { 
+    isFinished() {
         return false
     }
 }

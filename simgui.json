@@ -1,0 +1,14 @@
+{
+  "HALProvider": {
+    "RoboRIO": {
+      "RoboRIO Input": {
+        "open": true
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo"
+    }
+  }
+}

@@ -41,6 +41,11 @@ class Robot {
     teleInit() {
         // Cancel the maybe running auto command
         Scheduler.cancel(_autoCommand)
+
+        // Get teleop command from the container
+        _teleopCommand = _robotContainer.getTeleopCommand()
+        // Schedule teleop command
+        Scheduler.schedule(_teleopCommand)
     }
 
     // Called every teleop tick
