@@ -24,8 +24,8 @@
               set -euxo pipefail
 
               pkill frcUserProgram || true
-              
-              ./gradlew installFrcUserProgramLinuxx86-64DebugExecutable
+
+              gradle installFrcUserProgramLinuxx86-64DebugExecutable
 
               export LD_LIBRARY_PATH="./build/install/frcUserProgram/linuxx86-64/debug/lib:$LD_LIBRARY_PATH"
               exec ./build/install/frcUserProgram/linuxx86-64/debug/lib/frcUserProgram "$@"

@@ -1,4 +1,3 @@
-
 plugins {
     id "c"
     id "cpp"
@@ -55,6 +54,8 @@ model {
                     srcDir 'src/shim/include'
 
                     srcDir 'deps/wren/src/include'
+                    srcDir 'deps/wren/src/vm'
+                    srcDir 'deps/wren/src/optional'
                     srcDir 'deps/wrenbind17/include'
 
                     include '**/*.hpp'
@@ -79,12 +80,14 @@ model {
 
             sources.c {
                 source {
-                    srcDir 'deps/wren/build'
+                    srcDir 'deps/wren/src'
 
                     include '**/*.c'
                 }
                 exportedHeaders {
                     srcDir 'deps/wren/src/include'
+                    srcDir 'deps/wren/src/vm'
+                    srcDir 'deps/wren/src/optional'
                 }
             }
         }
